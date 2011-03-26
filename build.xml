@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="simplenote_api" default="help">
+<project name="simplenote-api" default="help">
 
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked in in Version
@@ -34,6 +34,10 @@
          should be checked in in Version Control Systems. -->
     <property file="default.properties" />
 
+    <!-- We set the system property build.sysclasspath to "ignore" in order to discard the
+         annoying warning message which otherwise appears during every build -->
+    <property name="build.sysclasspath" value="ignore" />
+
     <!-- Custom Android task to deal with the project target, and import the proper rules.
          This requires ant 1.6.0 or above. -->
     <path id="android.antlibs">
@@ -63,5 +67,8 @@
          build steps are used.
     -->
     <setup />
+
+    <path id="android.libraries.src"><path refid="project.libraries.src" /></path>
+    <path id="android.libraries.jars"><path refid="project.libraries.jars" /></path>
 
 </project>
