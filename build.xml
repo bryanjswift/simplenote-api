@@ -71,4 +71,29 @@
     <path id="android.libraries.src"><path refid="project.libraries.src" /></path>
     <path id="android.libraries.jars"><path refid="project.libraries.jars" /></path>
 
+    <!-- Testing -->
+    <property name="test.class.name" value="com.bryanjswift.simplenote.SimplenoteTest" />
+    
+    <path id="test.classpath">
+      <pathelement location="${out.classes}" />
+      <fileset dir="${ant.home}">
+        <include name="**/*.jar" />
+      </fileset>
+      <fileset dir="${lib}">
+        <include name="**/*.jar" />
+      </fileset>
+    </path>
+    
+    <target name="test">
+      <junit fork="yes" haltonfailure="yes">
+        <test name="${test.class.name}" />
+        <formatter type="plain" usefile="false" />
+        <classpath refid="test.classpath" />
+      </junit>
+    </target>
+
+    <target name="tmp">
+      <echo message="${ant.home}" />
+    </target>
+
 </project>
