@@ -1,0 +1,7 @@
+bin
+out
+gen
+*.eml
+*.iml
+*.tmproj
+local.properties
