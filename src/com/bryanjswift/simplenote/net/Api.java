@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -32,13 +33,14 @@ public class Api {
      * @param data to send in POST body
      * @return Response object containing status code and response body
      */
-    public static ApiResponse<String> Post(final String url, final String data) {
+    public static ApiResponse<String> Post(final String ua, final String url, final String data) {
         final HttpClient client = new DefaultHttpClient();
         ApiResponse<String> apiResponse = new ApiResponse<String>(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         try {
             final URI uri = new URI(url);
             final HttpPost post = new HttpPost(uri);
             post.setEntity(new StringEntity(data));
+            post.addHeader(new BasicHeader("User-Agent", ua));
             final HttpResponse response = client.execute(post);
             final HttpEntity entity = response.getEntity();
             final int status = response.getStatusLine().getStatusCode();
@@ -61,12 +63,13 @@ public class Api {
      * @param url to connect to
      * @return Response object containing status code and response body
      */
-    public static ApiResponse<String> Get(final String url) {
+    public static ApiResponse<String> Get(final String ua, final String url) {
         final HttpClient client = new DefaultHttpClient();
         ApiResponse<String> apiResponse = new ApiResponse<String>(HttpStatus.SC_INTERNAL_SERVER_ERROR);
         try {
             final URI uri = new URI(url);
             final HttpGet get = new HttpGet(uri);
+            get.addHeader(new BasicHeader("User-Agent", ua));
             final HttpResponse response = client.execute(get);
             final HttpEntity entity = response.getEntity();
             final int status = response.getStatusLine().getStatusCode();
