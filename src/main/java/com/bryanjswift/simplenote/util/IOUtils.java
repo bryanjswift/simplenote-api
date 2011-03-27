@@ -1,14 +1,16 @@
 package com.bryanjswift.simplenote.util;
 
-import android.util.Log;
 import com.bryanjswift.simplenote.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 /** @author bryanjswift */
 public class IOUtils {
-    private static final String LOGGING_TAG = Constants.TAG + "IOUtils";
+    /** Logger for IOUtils */
+    private static final Logger logger = LoggerFactory.getLogger(IOUtils.class);
     /**
      * Convert InputStream to String by reading all the data from it
      * @param in InputStream to read
@@ -22,7 +24,7 @@ public class IOUtils {
                 out.append(new String(b, 0, n));
             }
         } catch (IOException ioe) {
-            Log.e(LOGGING_TAG, "Unable to read stream contents", ioe);
+            logger.error("Unable to read stream contents", ioe);
         }
         return out.toString();
     }

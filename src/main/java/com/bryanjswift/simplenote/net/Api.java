@@ -1,6 +1,5 @@
 package com.bryanjswift.simplenote.net;
 
-import android.util.Log;
 import com.bryanjswift.simplenote.Constants;
 import com.bryanjswift.simplenote.util.Base64;
 import com.bryanjswift.simplenote.util.IOUtils;
@@ -14,6 +13,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -23,7 +24,8 @@ import java.net.URLEncoder;
 
 /** @author bryanjswift */
 public class Api {
-    private static final String LOGGING_TAG = Constants.TAG + "Api";
+    /** Logger for Api */
+    private static final Logger logger = LoggerFactory.getLogger(Api.class);
     private Api() { }
 
     /**
@@ -44,16 +46,16 @@ public class Api {
             final HttpResponse response = client.execute(post);
             final HttpEntity entity = response.getEntity();
             final int status = response.getStatusLine().getStatusCode();
-            Log.i(LOGGING_TAG, "API (POST) call to " + uri.toString() + " returned with " + status + " status");
+            logger.info("API (POST) call to {} returned with {} status", uri.toString(), status);
             apiResponse = new ApiResponse<String>(status, IOUtils.slurp(entity.getContent()), extractHeaders(response));
         } catch (URISyntaxException urise) {
-            Log.e(LOGGING_TAG, "Couldn't create URI", urise);
+            logger.error("Couldn't create URI", urise);
         } catch (UnsupportedEncodingException uee) {
-            Log.e(LOGGING_TAG, "Encountered unsupported encoding", uee);
+            logger.error("Encountered unsupported encoding", uee);
         } catch (ClientProtocolException cpe) {
-            Log.e(LOGGING_TAG, "Wrong protocol", cpe);
+            logger.error("Wrong protocol", cpe);
         } catch (IOException ioe) {
-            Log.e(LOGGING_TAG, "Something bad happened", ioe);
+            logger.error("Something bad happened", ioe);
         }
         return apiResponse;
     }
@@ -73,17 +75,17 @@ public class Api {
             final HttpResponse response = client.execute(get);
             final HttpEntity entity = response.getEntity();
             final int status = response.getStatusLine().getStatusCode();
-            Log.i(LOGGING_TAG, "API (GET) call to " + uri.toString() + " returned with " + status + " status");
+            logger.info("API (GET) call to {} returned with {} status", uri.toString(), status);
             final String body = status == HttpStatus.SC_OK ? IOUtils.slurp(entity.getContent()) : null;
             apiResponse = new ApiResponse<String>(status, body, extractHeaders(response));
         } catch (URISyntaxException urise) {
-            Log.e(LOGGING_TAG, "Couldn't create URI", urise);
+            logger.error("Couldn't create URI", urise);
         } catch (UnsupportedEncodingException uee) {
-            Log.e(LOGGING_TAG, "Encountered unsupported encoding", uee);
+            logger.error("Encountered unsupported encoding", uee);
         } catch (ClientProtocolException cpe) {
-            Log.e(LOGGING_TAG, "Wrong protocol", cpe);
+            logger.error("Wrong protocol", cpe);
         } catch (IOException ioe) {
-            Log.e(LOGGING_TAG, "Something bad happened", ioe);
+            logger.error("Something bad happened", ioe);
         }
         return apiResponse;
     }

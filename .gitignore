@@ -1,7 +1,11 @@
-bin
-out
-gen
 *.eml
 *.iml
 *.tmproj
-local.properties
+.session
+default.properties
+project/boot
+project/lib_managed
+project/plugins/lib_managed
+project/plugins/project/build.properties
+target
+
