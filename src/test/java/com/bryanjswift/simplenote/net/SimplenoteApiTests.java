@@ -1,13 +1,12 @@
 package com.bryanjswift.simplenote.net;
 
-import android.test.AndroidTestCase;
 import com.bryanjswift.simplenote.Constants;
 import com.bryanjswift.simplenote.model.Credentials;
 import junit.framework.TestCase;
 import org.apache.http.HttpStatus;
 
 /** @author bryanjswift */
-public class SimplenoteApiTest extends AndroidTestCase {
+public class SimplenoteApiTests extends TestCase {
     public static final String LOGGING_TAG = Constants.TAG + "SwiftNoteApiTest";
     public static final String USER_AGENT = "SimplenoteJavaApiTest/1.0";
     public final Credentials credentials = new Credentials(null, "swiftnote@bryanjswift.com", "simplenote1234");

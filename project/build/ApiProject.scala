@@ -7,7 +7,7 @@ class SimplenoteApiProject(info: ProjectInfo) extends DefaultProject(info) {
   // SLF4J for a nicer logging interface
   val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
 
-  val junit = "junit" % "junit" % "4.8.2" % "test->default"
+  val junitInterface = "com.novocode" % "junit-interface" % "0.6" % "test->default"
   val scalatest = "org.scalatest" % "scalatest" % "1.2" % "test->default"
   val slf4jJDK = "org.slf4j" % "slf4j-log4j12" % "1.6.1" % "test->default"
 
