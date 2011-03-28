@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bryanjswift.simplenote"
-    android:versionCode="1"
-    android:versionName="1.0.0">
-  <uses-sdk android:minSdkVersion="4" />
-  <!-- Need access to the internet in order to use the API -->
-  <uses-permission android:name="android.permission.INTERNET" />
-</manifest>
