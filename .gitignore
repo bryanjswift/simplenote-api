@@ -2,6 +2,7 @@
 *.iml
 *.tmproj
 .session
+AndroidManifest.xml
 default.properties
 project/boot
 project/lib_managed
