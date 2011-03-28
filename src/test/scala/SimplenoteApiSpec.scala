@@ -1,6 +1,5 @@
 package com.bryanjswift.simplenote.net
 
-import com.bryanjswift.simplenote.Constants
 import com.bryanjswift.simplenote.model.Credentials
 import org.apache.http.HttpStatus
 import org.scalatest.WordSpec
