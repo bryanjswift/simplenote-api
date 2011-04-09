@@ -184,9 +184,8 @@ public class Note {
      * Convert a JSONArray to an ImmutableList of Strings
      * @param a JSONArry to converto to a list
      * @return immutable list of Strings of the values in key's array
-     * @throws JSONException if the underlying JSONObject does
      */
-    private static List<String> jsonArrayAsList(final JSONArray a) throws JSONException {
+    private static List<String> jsonArrayAsList(final JSONArray a) {
         final ImmutableList.Builder<String> builder = ImmutableList.builder();
         if (a != null) {
             final int size = a.length();
