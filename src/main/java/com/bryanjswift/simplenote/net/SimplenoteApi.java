@@ -68,7 +68,7 @@ public class SimplenoteApi {
         final String url = String.format(Constants.API_NOTE_CREATE_URL, creds.auth, creds.email);
         final String data = toSave.json().toString();
         final ApiResponse<String> response = Api.Post(userAgent, url, data);
-        Note note = new Note();
+        Note note = Note.EMPTY;
         try {
             note = new Note(response.payload);
         } catch (JSONException jsone) {
