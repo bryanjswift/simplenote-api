@@ -41,7 +41,7 @@ public class SimplenoteApi {
      * @param credentials to use when accessing the API
      * @return a SimplenoteApi instance
      */
-    public SimplenoteApi setCredentials(final Credentials credentials) {
+    public SimplenoteApi using(final Credentials credentials) {
         return new SimplenoteApi(userAgent, credentials);
     }
 
