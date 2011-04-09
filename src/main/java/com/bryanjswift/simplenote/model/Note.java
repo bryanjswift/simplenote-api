@@ -139,6 +139,27 @@ public class Note {
     }
 
     /**
+     * Combine properties from passed in Note and this Note to create a new one
+     * @param note to copy values from
+     * @return a copy of the combination of this note and the passed in note
+     */
+    public Note merge(final Note note) {
+        final String key = this.key;
+        final boolean deleted = this.deleted;
+        final DateTime modifydate = note.modifydate;
+        final DateTime createdate = note.createdate.equals(longAsDate(0)) ? this.createdate : note.createdate;
+        final int syncnum = note.syncnum;
+        final int version = note.version;
+        final int minversion = note.minversion == 0 ? this.minversion : note.minversion;
+        final String sharekey = note.sharekey == null ? this.sharekey : note.sharekey;
+        final String publishkey = note.publishkey == null ? this.publishkey : note.publishkey;
+        final List<String> systemtags = note.systemtags.size() == 0 ? this.systemtags : note.systemtags;
+        final List<String> tags = note.tags.size() == 0 ? this.tags : note.tags;
+        final String content = note.content == null ? this.content : note.content;
+        return new Note(key, deleted, modifydate, createdate, syncnum, version, minversion, sharekey, publishkey, systemtags, tags, content);
+    }
+
+    /**
      * Convert a number of seconds into a DateTime
      * @param seconds since epoch
      * @return DateTime representing the instant seconds since epoch
