@@ -1,6 +1,5 @@
 package com.bryanjswift.simplenote.net;
 
-import com.bryanjswift.simplenote.Constants;
 import com.bryanjswift.simplenote.util.Base64;
 import com.bryanjswift.simplenote.util.IOUtils;
 import org.apache.http.HttpEntity;
@@ -31,6 +30,7 @@ public class Api {
     /**
      * Sends an HTTP POST request
      *
+     * @param ua User-Agent to send as header
      * @param url to connect to
      * @param data to send in POST body
      * @return Response object containing status code and response body
@@ -62,6 +62,7 @@ public class Api {
     /**
      * Sends an HTTP GET request
      *
+     * @param ua User-Agent to send as header
      * @param url to connect to
      * @return Response object containing status code and response body
      */
