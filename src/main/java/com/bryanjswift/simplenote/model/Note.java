@@ -116,9 +116,8 @@ public class Note {
     /**
      * Create a Note from a JSONObject by fetching values out of it
      * @param o JSONObject containing values to populate the note
-     * @throws JSONException if an exception is thrown getting data from o
      */
-    public Note(final JSONObject o) throws JSONException {
+    public Note(final JSONObject o) {
         this.key = o.optString("key", null);
         this.deleted = intAsBoolean(o.optInt("deleted", 0));
         this.modifydate = longAsDate(o.optLong("modifydate", 0));
