@@ -182,7 +182,7 @@ public class SimplenoteApi {
         try {
             note = new Note(json);
         } catch (JSONException jsone) {
-            logger.error("Unable to create Note from response {}", response.payload, jsone);
+            logger.error("Unable to create Note from response {}", json, jsone);
         }
         return note;
     }
