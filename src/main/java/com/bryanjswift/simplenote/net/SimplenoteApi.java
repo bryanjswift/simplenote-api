@@ -61,12 +61,7 @@ public class SimplenoteApi {
      */
     public ApiResponse<Note> create(final Note toSave) {
         final String url = String.format(Constants.API_NOTE_CREATE_URL, creds.auth, creds.email);
-        String data = "";
-        try {
-            data = toSave.json().toString();
-        } catch (JSONException jsone) {
-            logger.error("Disaster while getting JSON representation", jsone);
-        }
+        final String data = toSave.json().toString();
         final ApiResponse<String> response = Api.Post(userAgent, url, data);
         Note note = new Note();
         try {
