@@ -21,7 +21,7 @@ public class IndexParams {
      * @param since to set
      * @param length to set
      */
-    private IndexParams(String mark, DateTime since, int length) {
+    private IndexParams(final String mark, final DateTime since, final int length) {
         this.mark = mark;
         this.since = since;
         this.length = length;
