@@ -95,11 +95,10 @@ public class SimplenoteApi {
             data = data + "&length=" + params.length;
         }
         final ApiResponse<String> response = Api.Get(userAgent, url + data);
-        ApiResponse<NoteList> result;
+        ApiResponse<NoteList> result = new ApiResponse<NoteList>(HttpStatus.SC_INTERNAL_SERVER_ERROR, NoteList.EMPTY);
         if (response.status != HttpStatus.SC_OK) {
             result = new ApiResponse<NoteList>(response.status, NoteList.EMPTY, response.headers);
         } else {
-            result = new ApiResponse<NoteList>(HttpStatus.SC_INTERNAL_SERVER_ERROR, NoteList.EMPTY);
             try {
                 final ImmutableList.Builder<Note> builder = ImmutableList.builder();
                 final JSONObject json = new JSONObject(response.payload);
