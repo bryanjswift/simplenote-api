@@ -13,6 +13,10 @@ import java.util.List;
 
 public class Note {
     private static final Logger logger = LoggerFactory.getLogger(Note.class);
+    private static final DateTime EPOCH = longAsDate(0);
+    private static final List<String> NO_TAGS = (new ImmutableList.Builder<String>()).build();
+
+    public static final Note EMPTY = new Note();
 
     public final String key;
     public final boolean deleted;
@@ -30,8 +34,8 @@ public class Note {
     /**
      * Create an empty Note
      */
-    public Note() {
-        this(null, false, null, null, 0, 0, 0, null, null, null, null, null);
+    private Note() {
+        this(null, false, EPOCH, EPOCH, 0, 0, 0, null, null, NO_TAGS, NO_TAGS, null);
     }
 
     /**
@@ -215,5 +219,13 @@ public class Note {
             logger.error("Unable to create Note from response {}", jsone);
         }
         return o;
+    }
+
+    /**
+     * Create an empty Note with just a key
+     * @param key to set
+     */
+    public static Note fromKey(final String key) {
+        return new Note(key, false, EPOCH, EPOCH, 0, 0, 0, null, null, NO_TAGS, NO_TAGS, null);
     }
 }
