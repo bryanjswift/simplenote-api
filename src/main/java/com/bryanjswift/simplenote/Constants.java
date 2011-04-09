@@ -2,7 +2,9 @@ package com.bryanjswift.simplenote;
 
 /** @author bryanjswift */
 public class Constants {
-    public static final String TAG = "SimplenoteApi";
+    // Defaults
+    public static final String DEFAULT_KEY = "__SN_DEFAULT_KEY__";
+    public static final int DEFAULT_VERSION = -12389;
     // API Base URL
     public static final String BASE_URL = "https://simple-note.appspot.com";
     public static final String API_BASE_URL = BASE_URL + "/api";
