@@ -37,5 +37,19 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
       response.payload.count should be > (0)
       response.payload.notes.size should be (response.payload.count)
     }
+
+    "be able to retrieve a fully populated note" in {
+      val indexResponse = authorized.index
+      indexResponse.status should be (HttpStatus.SC_OK)
+      indexResponse.payload.count should be > (0)
+      val indexNote = indexResponse.payload.notes.get(0)
+      val key = indexNote.key
+      val noteResponse = authorized.get(key)
+      noteResponse.status should be (HttpStatus.SC_OK)
+      noteResponse.payload should not be (null)
+      val getNote = noteResponse.payload
+      getNote.key should be (indexNote.key)
+      getNote.createdate should be (indexNote.createdate)
+    }
   }
 }
