@@ -1,14 +1,19 @@
 package com.bryanjswift.simplenote.model;
 
+import com.bryanjswift.simplenote.Constants;
 import com.google.common.collect.ImmutableList;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class Note {
+    private static final Logger logger = LoggerFactory.getLogger(Note.class);
+
     public final String key;
     public final boolean deleted;
     public final DateTime modifydate;
@@ -57,6 +62,35 @@ public class Note {
         this.minversion = minversion;
         this.sharekey = sharekey;
         this.publishkey = publishkey;
+        ImmutableList.Builder<String> systemtagsBuilder = ImmutableList.builder();
+        systemtagsBuilder.addAll(systemtags);
+        this.systemtags = systemtagsBuilder.build();
+        ImmutableList.Builder<String> tagsBuilder = ImmutableList.builder();
+        tagsBuilder.addAll(tags);
+        this.tags = tagsBuilder.build();
+        this.content = content;
+    }
+
+    /**
+     * Create a Note instance from provided values
+     * @param deleted to set
+     * @param modifydate to set
+     * @param createdate to set
+     * @param systemtags to copy and set
+     * @param tags to copy and set
+     * @param content to set
+     */
+    public Note(final boolean deleted, final DateTime modifydate, final DateTime createdate,
+                final List<String> systemtags, final List<String> tags, final String content) {
+        this.key = Constants.DEFAULT_KEY;
+        this.deleted = deleted;
+        this.modifydate = modifydate;
+        this.createdate = createdate;
+        this.syncnum = Constants.DEFAULT_VERSION;
+        this.version = Constants.DEFAULT_VERSION;
+        this.minversion = Constants.DEFAULT_VERSION;
+        this.sharekey = null;
+        this.publishkey = null;
         ImmutableList.Builder<String> systemtagsBuilder = ImmutableList.builder();
         systemtagsBuilder.addAll(systemtags);
         this.systemtags = systemtagsBuilder.build();
@@ -135,17 +169,21 @@ public class Note {
     /**
      * Get a JSONObject representation of Note that can be sent to Simplenote servers
      * @return JSONObject with the modifiable properties of a note populated
-     * @throws JSONException if JSONObject does while setting values
      */
-    public JSONObject json() throws JSONException {
-        final JSONObject o = new JSONObject();
-        o.put("key", key);
-        o.put("deleted", deleted ? 1 : 0);
-        o.put("modifydate", modifydate.getMillis() / 1000);
-        o.put("createdate", createdate.getMillis() / 1000);
-        o.put("systemtags", systemtags);
-        o.put("tags", tags);
-        o.put("content", content);
+    public JSONObject json() {
+        JSONObject o = null;
+        try {
+            o = new JSONObject();
+            o.put("key", key);
+            o.put("deleted", deleted ? 1 : 0);
+            o.put("modifydate", modifydate.getMillis() / 1000);
+            o.put("createdate", createdate.getMillis() / 1000);
+            o.put("systemtags", systemtags);
+            o.put("tags", tags);
+            o.put("content", content);
+        } catch (JSONException jsone) {
+            logger.error("Unable to create Note from response {}", jsone);
+        }
         return o;
     }
 }
