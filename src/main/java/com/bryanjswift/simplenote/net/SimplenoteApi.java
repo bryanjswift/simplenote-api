@@ -68,12 +68,18 @@ public class SimplenoteApi {
         final String url = String.format(Constants.API_NOTE_CREATE_URL, creds.auth, creds.email);
         final String data = toSave.json().toString();
         final ApiResponse<String> response = Api.Post(userAgent, url, data);
-        Note note = Note.EMPTY;
-        try {
-            note = new Note(response.payload);
-        } catch (JSONException jsone) {
-            logger.error("Unable to create Note from response {}", response.payload, jsone);
-        }
+        final Note note = noteFromJson(response.payload);
+        return new ApiResponse<Note>(response.status, note, response.headers);
+    }
+
+    /** Retrieve a full note from the API
+     * @param key of note to get
+     * @return Full Note instance
+     */
+    public ApiResponse<Note> get(final String key) {
+        final String url = String.format(Constants.API_NOTE_GET_URL, key, creds.auth, creds.email);
+        final ApiResponse<String> response = Api.Get(userAgent, url);
+        final Note note = noteFromJson(response.payload, Note.fromKey(key));
         return new ApiResponse<Note>(response.status, note, response.headers);
     }
 
@@ -144,13 +150,40 @@ public class SimplenoteApi {
         final String url = String.format(Constants.API_NOTE_UPDATE_URL, toSave.key, creds.auth, creds.email);
         final String data = toSave.json().toString();
         final ApiResponse<String> response = Api.Post(userAgent, url, data);
-        Note result = toSave;
-        try {
-            final Note responseNote = new Note(response.payload);
+        final Note responseNote = noteFromJson(response.payload, Note.EMPTY);
+        final Note result;
+        if (responseNote.equals(Note.EMPTY)) {
+            result = toSave;
+        } else {
             result = toSave.merge(responseNote);
+        }
+        return new ApiResponse<Note>(response.status, result, response.headers);
+    }
+
+    /**
+     * Create a Note from a JSON String, empty note if there's an error
+     * @param json String to extract Note data from
+     * @return Note.EMPTY if there's an error get JSONObject from json, populated
+     * Note instance otherwise
+     */
+    private static Note noteFromJson(final String json) {
+        return noteFromJson(json, Note.EMPTY);
+    }
+
+    /**
+     * Create a Note from a JSON String, empty note if there's an error
+     * @param json String to extract Note data from
+     * @param otherwise Note to return if there is an error getting JSONObject from json
+     * @return otherwise if there's an error get JSONObject from json, populated
+     * Note instance otherwise
+     */
+    private static Note noteFromJson(final String json, final Note otherwise) {
+        Note note = otherwise;
+        try {
+            note = new Note(json);
         } catch (JSONException jsone) {
             logger.error("Unable to create Note from response {}", response.payload, jsone);
         }
-        return new ApiResponse<Note>(response.status, result, response.headers);
+        return note;
     }
 }
