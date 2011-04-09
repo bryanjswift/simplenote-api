@@ -125,4 +125,32 @@ public class SimplenoteApi {
     public ApiResponse<NoteList> index() {
         return index(IndexParams.DEFAULT);
     }
+
+    /**
+     * Move a Note to the Trash and update it
+     * @param toTrash is the Note to be deleted or moved to the trash
+     * @return Note as seen by the server after update
+     */
+    public ApiResponse<Note> trash(final Note toTrash) {
+        return update(toTrash.setDeleted(true));
+    }
+
+    /**
+     * Update a note on the server
+     * @param toSave is the Note to be saved
+     * @return Note as seen by the server after update
+     */
+    public ApiResponse<Note> update(final Note toSave) {
+        final String url = String.format(Constants.API_NOTE_UPDATE_URL, toSave.key, creds.auth, creds.email);
+        final String data = toSave.json().toString();
+        final ApiResponse<String> response = Api.Post(userAgent, url, data);
+        Note result = toSave;
+        try {
+            final Note responseNote = new Note(response.payload);
+            result = toSave.merge(responseNote);
+        } catch (JSONException jsone) {
+            logger.error("Unable to create Note from response {}", response.payload, jsone);
+        }
+        return new ApiResponse<Note>(response.status, result, response.headers);
+    }
 }
