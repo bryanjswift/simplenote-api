@@ -2,6 +2,7 @@ package com.bryanjswift.simplenote;
 
 import com.bryanjswift.simplenote.model.Note;
 import com.google.common.collect.ImmutableList;
+import org.joda.time.DateTime;
 
 import java.util.List;
 
@@ -11,6 +12,9 @@ public class Constants {
     public static final String DEFAULT_KEY = "__SN_DEFAULT_KEY__";
     public static final int DEFAULT_VERSION = -12389;
     public static final List<Note> EMPTY_LIST = (new ImmutableList.Builder<Note>()).build();
+    public static final String DEFAULT_INDEX_MARK = null;
+    public static final DateTime DEFAULT_INDEX_SINCE = null;
+    public static final int DEFAULT_INDEX_LENGTH = 100;
     // API Base URL
     public static final String BASE_URL = "https://simple-note.appspot.com";
     public static final String API_BASE_URL = BASE_URL + "/api";
