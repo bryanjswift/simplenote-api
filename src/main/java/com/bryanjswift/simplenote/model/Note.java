@@ -134,7 +134,7 @@ public class Note {
      * @param seconds since epoch
      * @return DateTime representing the instant seconds since epoch
      */
-    private DateTime longAsDate(final long seconds) {
+    private static DateTime longAsDate(final long seconds) {
         return new DateTime(seconds * 1000);
     }
 
@@ -143,7 +143,7 @@ public class Note {
      * @param i to treat as an integer
      * @return false if i != 0, true otherwise
      */
-    private boolean intAsBoolean(final int i) {
+    private static boolean intAsBoolean(final int i) {
         return i != 0;
     }
 
@@ -153,7 +153,7 @@ public class Note {
      * @return immutable list of Strings of the values in key's array
      * @throws JSONException if the underlying JSONObject does
      */
-    public List<String> jsonArrayAsList(final JSONArray a) throws JSONException {
+    private static List<String> jsonArrayAsList(final JSONArray a) throws JSONException {
         final ImmutableList.Builder<String> builder = ImmutableList.builder();
         if (a != null) {
             final int size = a.length();
