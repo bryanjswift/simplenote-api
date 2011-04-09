@@ -1,6 +1,7 @@
 package com.bryanjswift.simplenote.model;
 
 import com.bryanjswift.simplenote.Constants;
+import com.google.common.collect.ImmutableList;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class NoteList {
     public NoteList(final String mark, final int count, final List<Note> notes) {
         this.mark = mark;
         this.count = count;
-        this.notes = notes;
+        final ImmutableList.Builder<Note> notesBuilder = ImmutableList.builder();
+        notesBuilder.addAll(notes);
+        this.notes = notesBuilder.build();
     }
 }
