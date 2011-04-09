@@ -14,7 +14,7 @@ public class Constants {
     public static final List<Note> EMPTY_LIST = (new ImmutableList.Builder<Note>()).build();
     public static final String DEFAULT_INDEX_MARK = null;
     public static final DateTime DEFAULT_INDEX_SINCE = null;
-    public static final int DEFAULT_INDEX_LENGTH = 100;
+    public static final int DEFAULT_INDEX_LENGTH = 20;
     // API Base URL
     public static final String BASE_URL = "https://simple-note.appspot.com";
     public static final String API_BASE_URL = BASE_URL + "/api";
