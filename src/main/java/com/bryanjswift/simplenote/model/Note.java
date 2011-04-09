@@ -122,11 +122,11 @@ public class Note {
         this.syncnum = o.optInt("syncnum", 0);
         this.version = o.optInt("version", 0);
         this.minversion = o.optInt("minversion", 0);
-        this.sharekey = o.optString("sharekey", "");
-        this.publishkey = o.optString("publishkey", "");
+        this.sharekey = o.optString("sharekey", null);
+        this.publishkey = o.optString("publishkey", null);
         this.systemtags = jsonArrayAsList(o.optJSONArray("systemtags"));
         this.tags = jsonArrayAsList(o.optJSONArray("tags"));
-        this.content = o.optString("content", "");
+        this.content = o.optString("content", null);
     }
 
     /**
