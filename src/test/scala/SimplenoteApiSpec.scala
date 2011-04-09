@@ -26,4 +26,16 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
       response.payload.password should be (null)
     }
   }
+
+  "Properly credentialed SimplenoteApi" should {
+    val loginResponse = unauthorized.login(credentials.email, credentials.password)
+    val authorized = unauthorized.using(loginResponse.payload)
+    
+    "be able to list the index" in {
+      val response = authorized.index
+      response.status should be (HttpStatus.SC_OK)
+      response.payload.count should be > (0)
+      response.payload.notes.size should be (response.payload.count)
+    }
+  }
 }
