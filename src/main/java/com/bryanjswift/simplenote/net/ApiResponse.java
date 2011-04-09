@@ -1,7 +1,5 @@
 package com.bryanjswift.simplenote.net;
 
-import org.apache.http.Header;
-
 /** @author bryanjswift */
 public class ApiResponse<T> {
     /** Status code of API request */
