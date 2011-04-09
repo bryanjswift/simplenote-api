@@ -48,6 +48,7 @@ public class Api {
             final int status = response.getStatusLine().getStatusCode();
             logger.info("API (POST) call to {} returned with {} status", uri.toString(), status);
             apiResponse = new ApiResponse<String>(status, IOUtils.slurp(entity.getContent()), extractHeaders(response));
+            logger.debug("API (POST) call to {} had response -- {}", uri.toString(), apiResponse.payload);
         } catch (URISyntaxException urise) {
             logger.error("Couldn't create URI", urise);
         } catch (UnsupportedEncodingException uee) {
@@ -79,6 +80,7 @@ public class Api {
             logger.info("API (GET) call to {} returned with {} status", uri.toString(), status);
             final String body = status == HttpStatus.SC_OK ? IOUtils.slurp(entity.getContent()) : null;
             apiResponse = new ApiResponse<String>(status, body, extractHeaders(response));
+            logger.debug("API (GET) call to {} had response -- {}", uri.toString(), apiResponse.payload);
         } catch (URISyntaxException urise) {
             logger.error("Couldn't create URI", urise);
         } catch (UnsupportedEncodingException uee) {
