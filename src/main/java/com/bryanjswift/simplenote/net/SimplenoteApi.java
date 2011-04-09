@@ -3,7 +3,12 @@ package com.bryanjswift.simplenote.net;
 import com.bryanjswift.simplenote.Constants;
 import com.bryanjswift.simplenote.model.Credentials;
 import com.bryanjswift.simplenote.model.Note;
+import com.bryanjswift.simplenote.model.NoteList;
+import com.google.common.collect.ImmutableList;
+import org.apache.http.HttpStatus;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,5 +75,55 @@ public class SimplenoteApi {
             logger.error("Unable to create Note from response {}", response.payload, jsone);
         }
         return new ApiResponse<Note>(response.status, note, response.headers);
+    }
+
+    /**
+     * Get the index of note data using passed parameters
+     * @param params IndexParams used to limit the data from the API
+     * @return list of Note objects with no content
+     */
+    public ApiResponse<NoteList> index(final IndexParams params) {
+        final String url = String.format(Constants.API_LIST_URL, creds.auth, creds.email);
+        String data = "";
+        if (params.mark != null && !params.mark.equals(Constants.DEFAULT_INDEX_MARK)) {
+            data = data + "&mark=" + params.mark;
+        }
+        if (params.since != null && !params.since.equals(Constants.DEFAULT_INDEX_SINCE)) {
+            data = data + "&since=" + params.since.getMillis();
+        }
+        if (params.length != Constants.DEFAULT_INDEX_LENGTH) {
+            data = data + "&length=" + params.length;
+        }
+        final ApiResponse<String> response = Api.Get(userAgent, url + data);
+        ApiResponse<NoteList> result;
+        if (response.status != HttpStatus.SC_OK) {
+            result = new ApiResponse<NoteList>(response.status, NoteList.EMPTY, response.headers);
+        } else {
+            result = new ApiResponse<NoteList>(HttpStatus.SC_INTERNAL_SERVER_ERROR, NoteList.EMPTY);
+            try {
+                final ImmutableList.Builder<Note> builder = ImmutableList.builder();
+                final JSONObject json = new JSONObject(response.payload);
+                final JSONArray notes = json.optJSONArray("data");
+                final int length = notes.length();
+                for (int i = 0; i < length; i++) {
+                    builder.add(new Note(notes.getJSONObject(i)));
+                }
+                final String mark = json.optString("mark", null);
+                final int count = json.optInt("count", 0);
+                final NoteList noteList = new NoteList(mark, count, builder.build());
+                result = new ApiResponse<NoteList>(response.status, noteList, response.headers);
+            } catch (JSONException jsone) {
+                logger.error("Unable to parse response into JSON", jsone);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Get the index of note data using default parameters
+     * @return list of Note objects with no content
+     */
+    public ApiResponse<NoteList> index() {
+        return index(IndexParams.DEFAULT);
     }
 }
