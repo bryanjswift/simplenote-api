@@ -91,7 +91,7 @@ public class SimplenoteApi {
         if (params.since != null && !params.since.equals(Constants.DEFAULT_INDEX_SINCE)) {
             data = data + "&since=" + params.since.getMillis();
         }
-        if (params.length != Constants.DEFAULT_INDEX_LENGTH) {
+        if (params.length > 0) {
             data = data + "&length=" + params.length;
         }
         final ApiResponse<String> response = Api.Get(userAgent, url + data);
