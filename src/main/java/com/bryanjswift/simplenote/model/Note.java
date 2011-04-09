@@ -130,6 +130,15 @@ public class Note {
     }
 
     /**
+     * Create a new note with the delete flag updated
+     * @param deleted to set on the new Note
+     * @return a copy of this Note with deleted set to parameter
+     */
+    public Note setDeleted(final boolean deleted) {
+        return new Note(this.key, deleted, this.modifydate, this.createdate, this.syncnum, this.version, this.minversion, this.sharekey, this.publishkey, this.systemtags, this.tags, this.content);
+    }
+
+    /**
      * Convert a number of seconds into a DateTime
      * @param seconds since epoch
      * @return DateTime representing the instant seconds since epoch
