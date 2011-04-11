@@ -49,6 +49,27 @@ public class SimplenoteApi {
         return new ApiResponse<Note>(response.status, note, response.headers);
     }
 
+    /**
+     * Send a delete message to the API to permanently delete a note from the trash
+     * @param key of note to delete
+     * @return Empty note with key corresponding to passed in key
+     */
+    public ApiResponse<Note> delete(final String key) {
+        final String url = String.format(Constants.API_NOTE_DELETE_URL, key, creds.auth, creds.email);
+        final ApiResponse<String> response = Api.Delete(userAgent, url);
+        final Note note = Note.fromKey(key);
+        return new ApiResponse<Note>(response.status, note, response.headers);
+    }
+
+    /**
+     * Send a delete message to the API to permanently delete a note from the trash
+     * @param note to get key out of
+     * @return Empty note with key corresponding to passed in key
+     */
+    public ApiResponse<Note> delete(final Note note) {
+        return delete(note.key);
+    }
+
     /** Retrieve a full note from the API
      * @param key of note to get
      * @return Full Note instance
