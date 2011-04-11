@@ -7,6 +7,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -81,6 +82,39 @@ public class Api {
             final String body = status == HttpStatus.SC_OK ? IOUtils.slurp(entity.getContent()) : null;
             apiResponse = new ApiResponse<String>(status, body, extractHeaders(response));
             logger.debug("API (GET) call to {} had response -- {}", uri.toString(), apiResponse.payload);
+        } catch (URISyntaxException urise) {
+            logger.error("Couldn't create URI", urise);
+        } catch (UnsupportedEncodingException uee) {
+            logger.error("Encountered unsupported encoding", uee);
+        } catch (ClientProtocolException cpe) {
+            logger.error("Wrong protocol", cpe);
+        } catch (IOException ioe) {
+            logger.error("Something bad happened", ioe);
+        }
+        return apiResponse;
+    }
+
+    /**
+     * Sends an HTTP DELETE request
+     *
+     * @param ua User-Agent to send as header
+     * @param url to connect to
+     * @return Response object containing status code and response body
+     */
+    public static ApiResponse<String> Delete(final String ua, final String url) {
+        final HttpClient client = new DefaultHttpClient();
+        ApiResponse<String> apiResponse = new ApiResponse<String>(HttpStatus.SC_INTERNAL_SERVER_ERROR);
+        try {
+            final URI uri = new URI(url);
+            final HttpDelete delete = new HttpDelete(uri);
+            delete.addHeader(new BasicHeader("User-Agent", ua));
+            final HttpResponse response = client.execute(delete);
+            final HttpEntity entity = response.getEntity();
+            final int status = response.getStatusLine().getStatusCode();
+            logger.info("API (DELETE) call to {} returned with {} status", uri.toString(), status);
+            final String body = status == HttpStatus.SC_OK ? IOUtils.slurp(entity.getContent()) : null;
+            apiResponse = new ApiResponse<String>(status, body, extractHeaders(response));
+            logger.debug("API (DELETE) call to {} had response -- {}", uri.toString(), apiResponse.payload);
         } catch (URISyntaxException urise) {
             logger.error("Couldn't create URI", urise);
         } catch (UnsupportedEncodingException uee) {
