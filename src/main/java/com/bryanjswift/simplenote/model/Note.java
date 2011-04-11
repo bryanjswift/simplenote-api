@@ -1,6 +1,7 @@
 package com.bryanjswift.simplenote.model;
 
 import com.bryanjswift.simplenote.Constants;
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -217,6 +218,40 @@ public class Note {
             logger.error("Unable to create Note from response {}", jsone);
         }
         return o;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(key, deleted, modifydate, createdate, syncnum,
+                version, minversion, sharekey, publishkey, systemtags, tags, content);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        final boolean result;
+        if (o instanceof Note) {
+            final Note note = (Note) o;
+            result = Objects.equal(this.key, note.key) && Objects.equal(this.syncnum, note.syncnum) && Objects.equal(this.version, note.version);
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * Add a toString method specific to Notes
+     * @return String representation of Note
+     */
+    @Override
+    public String toString() {
+        final Objects.ToStringHelper helper = Objects.toStringHelper(this);
+        helper.add("key", this.key);
+        helper.add("deleted", this.deleted);
+        helper.add("modifydate", this.modifydate);
+        helper.add("createdate", this.createdate);
+        helper.add("systemtags", this.systemtags);
+        helper.add("tags", this.tags);
+        return helper.toString();
     }
 
     /**
