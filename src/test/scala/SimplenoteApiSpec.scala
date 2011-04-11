@@ -81,11 +81,13 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
       createResponse.payload should not be (null)
       createResponse.payload.key should not be (null)
       createResponse.payload.key.length should be > (0)
-      val tmpNote = Note.fromKey(createResponse.payload.key)
-      val trashResponse = authorized.trash(tmpNote)
+      val key = createResponse.payload.key
+      val trashResponse = authorized.trash(Note.fromKey(key))
       trashResponse.status should be (HttpStatus.SC_OK)
-      val deleteResponse = authorized.delete(tmpNote)
+      val deleteResponse = authorized.delete(key)
       deleteResponse.status should be (HttpStatus.SC_OK)
+      val getResponse = authorized.get(key)
+      getResponse.status should be (HttpStatus.SC_NOT_FOUND)
     }
   }
 }
