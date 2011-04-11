@@ -224,6 +224,6 @@ public class Note {
      * @param key to set
      */
     public static Note fromKey(final String key) {
-        return new Note(key, false, EPOCH, EPOCH, 0, 0, 0, null, null, NO_TAGS, NO_TAGS, null);
+        return new Note(key, false, null, null, 0, 0, 0, null, null, NO_TAGS, NO_TAGS, null);
     }
 }
