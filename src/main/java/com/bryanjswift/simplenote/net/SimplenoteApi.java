@@ -37,29 +37,6 @@ public class SimplenoteApi {
     }
 
     /**
-     * Retrieve an update API instance with passed in creds
-     * @param credentials to use when accessing the API
-     * @return a SimplenoteApi instance
-     */
-    public SimplenoteApi using(final Credentials credentials) {
-        return new SimplenoteApi(userAgent, credentials);
-    }
-
-    /**
-     * Get auth token from API for given creds
-     * @param email of user
-     * @param password of user
-     * @return An ApiResponse with Credentials information containing the returned auth token
-     */
-    public ApiResponse<Credentials> login(final String email, final String password) {
-        final String params = String.format("email=%s&password=%s", email, password);
-        final String data = Api.encode(params);
-        final String url = Constants.API_LOGIN_URL;
-        final ApiResponse<String> response = Api.Post(userAgent, url, data);
-        return new ApiResponse<Credentials>(response.status, new Credentials(response.payload, email));
-    }
-
-    /**
      * Send a note to the API to create it for the user identified by instance's credentials
      * @param toSave Note to create
      * @return ApiResponse containing Note contained in server response
@@ -81,6 +58,15 @@ public class SimplenoteApi {
         final ApiResponse<String> response = Api.Get(userAgent, url);
         final Note note = noteFromJson(response.payload, Note.fromKey(key));
         return new ApiResponse<Note>(response.status, note, response.headers);
+    }
+
+    /**
+     * Retrieve a full note from the API getting key from note passed in
+     * @param note to get key value from
+     * @return Full Note instance
+     */
+    public ApiResponse<Note> get(final Note note) {
+        return get(note.key);
     }
 
     /**
@@ -133,6 +119,20 @@ public class SimplenoteApi {
     }
 
     /**
+     * Get auth token from API for given creds
+     * @param email of user
+     * @param password of user
+     * @return An ApiResponse with Credentials information containing the returned auth token
+     */
+    public ApiResponse<Credentials> login(final String email, final String password) {
+        final String params = String.format("email=%s&password=%s", email, password);
+        final String data = Api.encode(params);
+        final String url = Constants.API_LOGIN_URL;
+        final ApiResponse<String> response = Api.Post(userAgent, url, data);
+        return new ApiResponse<Credentials>(response.status, new Credentials(response.payload, email));
+    }
+
+    /**
      * Move a Note to the Trash and update it
      * @param toTrash is the Note to be deleted or moved to the trash
      * @return Note as seen by the server after update
@@ -158,6 +158,15 @@ public class SimplenoteApi {
             result = toSave.merge(responseNote);
         }
         return new ApiResponse<Note>(response.status, result, response.headers);
+    }
+
+    /**
+     * Retrieve an update API instance with passed in creds
+     * @param credentials to use when accessing the API
+     * @return a SimplenoteApi instance
+     */
+    public SimplenoteApi using(final Credentials credentials) {
+        return new SimplenoteApi(userAgent, credentials);
     }
 
     /**
