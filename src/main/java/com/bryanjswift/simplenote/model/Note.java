@@ -222,6 +222,7 @@ public class Note {
     /**
      * Create an empty Note with just a key
      * @param key to set
+     * @return an empty Note with key set
      */
     public static Note fromKey(final String key) {
         return new Note(key, false, null, null, 0, 0, 0, null, null, NO_TAGS, NO_TAGS, null);
