@@ -1,7 +1,9 @@
 package com.bryanjswift.simplenote.net
 
-import com.bryanjswift.simplenote.model.Credentials
+import com.bryanjswift.simplenote.Constants
+import com.bryanjswift.simplenote.model.{ Credentials, Note }
 import org.apache.http.HttpStatus
+import org.joda.time.DateTime
 import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
 
@@ -12,6 +14,7 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
   val unauthorized = new SimplenoteApi(userAgent)
 
   "SimplenoteApi" should {
+
     "return Credentials with valid auth value on successful login" in {
       val response = unauthorized.login(credentials.email, credentials.password)
       response.status should be (HttpStatus.SC_OK)
@@ -19,6 +22,7 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
       response.payload.auth.length should be > 0
       response.payload.password should be (null)
     }
+
     "return with unauthorized status on unsuccessful login" in {
       val response = unauthorized.login(badCredentials.email, badCredentials.password)
       response.status should not be (HttpStatus.SC_UNAUTHORIZED)
@@ -28,8 +32,11 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
   }
 
   "Properly credentialed SimplenoteApi" should {
+    import scala.collection.JavaConversions._
     val loginResponse = unauthorized.login(credentials.email, credentials.password)
     val authorized = unauthorized.using(loginResponse.payload)
+    val now = new DateTime
+    val localNote = new Note(false, now, now, List[String](), List[String](), "Just a test")
     
     "be able to list the index" in {
       val response = authorized.index
@@ -49,8 +56,39 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
       noteResponse.payload should not be (null)
       val getNote = noteResponse.payload
       getNote.key should be (indexNote.key)
-      getNote.createdate should be (indexNote.createdate)
       getNote.content.length should be > (0)
+    }
+
+    "be able to move a note to Trash" in {
+      val indexResponse = authorized.index
+      indexResponse.status should be (HttpStatus.SC_OK)
+      indexResponse.payload.count should be > (0)
+      val indexNote = indexResponse.payload.notes.get(0)
+      val key = indexNote.key
+      val note = Note.fromKey(key)
+      val trashResponse = authorized.trash(note)
+      trashResponse.status should be (HttpStatus.SC_OK)
+      trashResponse.payload should not be (null)
+      trashResponse.payload.key should be (key)
+      trashResponse.payload.deleted should be (true)
+      // set note back to active
+      authorized.update(Note.fromKey(key).setDeleted(false))
+    }
+
+    "be able to create a new note and subsequently delete it" in {
+      val initialIndexResponse = authorized.index
+      initialIndexResponse.status should be (HttpStatus.SC_OK)
+      val count = initialIndexResponse.payload.count
+      val createResponse = authorized.create(localNote)
+      createResponse.status should be (HttpStatus.SC_OK)
+      createResponse.payload should not be (null)
+      createResponse.payload.key should not be (null)
+      createResponse.payload.key.length should be > (0)
+      val tmpNote = Note.fromKey(createResponse.payload.key)
+      val trashResponse = authorized.trash(tmpNote)
+      trashResponse.status should be (HttpStatus.SC_OK)
+      val deleteResponse = authorized.delete(tmpNote)
+      deleteResponse.status should be (HttpStatus.SC_OK)
     }
   }
 }
