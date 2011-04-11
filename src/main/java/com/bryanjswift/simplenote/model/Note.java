@@ -147,7 +147,7 @@ public class Note {
      * @return a copy of the combination of this note and the passed in note
      */
     public Note merge(final Note note) {
-        final String key = this.key;
+        final String key = note.key == null ? this.key : note.key;
         final boolean deleted = this.deleted;
         final DateTime modifydate = note.modifydate;
         final DateTime createdate = note.createdate.equals(longAsDate(0)) ? this.createdate : note.createdate;
