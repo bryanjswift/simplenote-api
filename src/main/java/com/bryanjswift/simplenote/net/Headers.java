@@ -1,5 +1,6 @@
 package com.bryanjswift.simplenote.net;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import org.apache.http.Header;
@@ -80,5 +81,29 @@ public class Headers {
             result = keys;
         }
         return result;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode((Object[]) headers);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        final boolean result;
+        if (o instanceof Headers) {
+            final Headers h = (Headers) o;
+            result = Objects.equal(this.headers, h.headers);
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final Objects.ToStringHelper helper = Objects.toStringHelper(this);
+        helper.addValue(keys());
+        return helper.toString();
     }
 }
