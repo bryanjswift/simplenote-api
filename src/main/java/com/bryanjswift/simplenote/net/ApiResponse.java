@@ -39,6 +39,15 @@ public class ApiResponse<T> {
     }
 
     /**
+     * Create a response with no payload
+     * @param status code from response
+     * @param headers object containing Header information from response
+     */
+    public ApiResponse(final int status, final Headers headers) {
+      this(status, null, headers);
+    }
+
+    /**
      * Clone the response with a new status, keeping other values the same
      * @param status to set on the new response
      * @return ApiResponse with new status
