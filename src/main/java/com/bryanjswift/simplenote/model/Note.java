@@ -238,10 +238,6 @@ public class Note {
         return result;
     }
 
-    /**
-     * Add a toString method specific to Notes
-     * @return String representation of Note
-     */
     @Override
     public String toString() {
         final Objects.ToStringHelper helper = Objects.toStringHelper(this);
