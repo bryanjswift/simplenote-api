@@ -227,7 +227,7 @@ public class Note {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         final boolean result;
         if (o instanceof Note) {
             final Note note = (Note) o;

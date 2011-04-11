@@ -1,5 +1,7 @@
 package com.bryanjswift.simplenote.model;
 
+import com.google.common.base.Objects;
+
 /** @author bryanjswift */
 public class Credentials {
     public final String auth;
@@ -25,5 +27,31 @@ public class Credentials {
      */
     public Credentials(final String auth, final String email) {
         this(auth, email, null);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(auth, email, password);
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        final boolean result;
+        if (o instanceof Credentials) {
+            final Credentials creds = (Credentials) o;
+            result = Objects.equal(this.auth, creds.auth) && Objects.equal(this.email, creds.email)
+                      && Objects.equal(this.password, creds.password);
+        } else {
+            result = false;
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        final Objects.ToStringHelper helper = Objects.toStringHelper(this);
+        helper.add("email", this.email);
+        helper.addValue(this.auth == null ? "has password" : "has auth");
+        return helper.toString();
     }
 }
