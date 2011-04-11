@@ -76,9 +76,6 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
     }
 
     "be able to create a new note and subsequently delete it" in {
-      val initialIndexResponse = authorized.index
-      initialIndexResponse.status should be (HttpStatus.SC_OK)
-      val count = initialIndexResponse.payload.count
       val createResponse = authorized.create(localNote)
       createResponse.status should be (HttpStatus.SC_OK)
       createResponse.payload should not be (null)
