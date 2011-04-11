@@ -1,10 +1,12 @@
 package com.bryanjswift.simplenote.net;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import org.apache.http.Header;
 
 import java.util.EmptyStackException;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Meant to mimic the interface of getting Header data from a org.apache.http.HttpResponse
@@ -14,6 +16,7 @@ import java.util.List;
 public class Headers {
     public static final Headers EMPTY = new Headers(new Header[] {});
     private final Header[] headers;
+    private Set<String> keys;
 
     /**
      * Create an instance of Headers from an Array of HTTP Headers
@@ -21,6 +24,15 @@ public class Headers {
      */
     public Headers(final Header[] headers) {
         this.headers = headers;
+    }
+
+    /**
+     * Check if there is a value for a given header name
+     * @param name of the header to look for
+     * @return true if this contains a header with name
+     */
+    public boolean contains(final String name) {
+        return keys().contains(name);
     }
 
     /**
@@ -50,5 +62,23 @@ public class Headers {
             }
         }
         return b.build();
+    }
+
+    /**
+     * Retrieve the set of header names contained
+     * @return unique set of names represented by this Headers instance
+     */
+    public Set<String> keys() {
+        final Set<String> result;
+        if (keys != null) {
+            final ImmutableSet.Builder<String> b = ImmutableSet.builder();
+            for (final Header h : headers) {
+                b.add(h.getName());
+            }
+            result = b.build();
+        } else {
+            result = keys;
+        }
+        return result;
     }
 }
