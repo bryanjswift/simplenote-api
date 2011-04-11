@@ -50,6 +50,7 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
       val getNote = noteResponse.payload
       getNote.key should be (indexNote.key)
       getNote.createdate should be (indexNote.createdate)
+      getNote.content.length should be > (0)
     }
   }
 }
