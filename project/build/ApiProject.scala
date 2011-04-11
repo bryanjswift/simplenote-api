@@ -4,7 +4,7 @@ class SimplenoteApiProject(info: ProjectInfo) extends DefaultProject(info) {
   val httpClient = "org.apache.httpcomponents" % "httpclient" % "4.1"
   val json = "org.json" % "json" % "20090211"
   val jodaTime = "joda-time" % "joda-time" % "1.6.2"
-  val guava = "com.google.guava" % "guava" % "r08"
+  val guava = "com.google.guava" % "guava" % "r09"
   // SLF4J for a nicer logging interface
   val slf4j = "org.slf4j" % "slf4j-api" % "1.6.1"
 
