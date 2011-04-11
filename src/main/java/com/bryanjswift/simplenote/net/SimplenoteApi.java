@@ -166,7 +166,7 @@ public class SimplenoteApi {
         if (response.status == HttpStatus.SC_OK) {
             result = new ApiResponse<Credentials>(response.status, new Credentials(response.payload, email), response.headers);
         } else {
-            result = new ApiResponse<Credentials>(response.status, null, response.headers);
+            result = new ApiResponse<Credentials>(response.status, new Credentials(null, email, password), response.headers);
         }
         return result;
     }

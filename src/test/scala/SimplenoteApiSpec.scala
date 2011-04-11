@@ -27,7 +27,8 @@ class SimplenoteApiSpec extends WordSpec with ShouldMatchers {
       val response = unauthorized.login(badCredentials.email, badCredentials.password)
       response.status should not be (HttpStatus.SC_UNAUTHORIZED)
       response.payload.email should be (badCredentials.email)
-      response.payload.password should be (null)
+      response.payload.password should be (badCredentials.password)
+      response.payload should be (badCredentials)
     }
   }
 
