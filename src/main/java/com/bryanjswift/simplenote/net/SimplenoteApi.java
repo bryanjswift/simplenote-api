@@ -162,7 +162,13 @@ public class SimplenoteApi {
         final String data = Api.encode(params);
         final String url = Constants.API_LOGIN_URL;
         final ApiResponse<String> response = Api.Post(userAgent, url, data);
-        return new ApiResponse<Credentials>(response.status, new Credentials(response.payload, email));
+        final ApiResponse<Credentials> result;
+        if (response.status == HttpStatus.SC_OK) {
+            result = new ApiResponse<Credentials>(response.status, new Credentials(response.payload, email), response.headers);
+        } else {
+            result = new ApiResponse<Credentials>(response.status, null, response.headers);
+        }
+        return result;
     }
 
     /**
@@ -183,14 +189,20 @@ public class SimplenoteApi {
         final String url = String.format(Constants.API_NOTE_UPDATE_URL, toSave.key, creds.auth, creds.email);
         final String data = toSave.json().toString();
         final ApiResponse<String> response = Api.Post(userAgent, url, data);
-        final Note responseNote = noteFromJson(response.payload, Note.EMPTY);
-        final Note result;
-        if (responseNote.equals(Note.EMPTY)) {
-            result = toSave;
+        final ApiResponse<Note> result;
+        if (response.status == HttpStatus.SC_OK) {
+            final Note responseNote = noteFromJson(response.payload, Note.EMPTY);
+            final Note noteResult;
+            if (responseNote.equals(Note.EMPTY)) {
+                noteResult = toSave;
+            } else {
+                noteResult = toSave.merge(responseNote);
+            }
+            result = new ApiResponse<Note>(response.status, noteResult, response.headers);
         } else {
-            result = toSave.merge(responseNote);
+            result = new ApiResponse<Note>(response.status, toSave, response.headers);
         }
-        return new ApiResponse<Note>(response.status, result, response.headers);
+        return result;
     }
 
     /**
