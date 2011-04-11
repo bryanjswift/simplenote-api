@@ -1,5 +1,7 @@
 package com.bryanjswift.simplenote.net;
 
+import com.google.common.base.Objects;
+
 /** @author bryanjswift */
 public class ApiResponse<T> {
     /** Status code of API request */
@@ -80,9 +82,11 @@ public class ApiResponse<T> {
      * @return String representation of ApiResponse
      */
     public String toString() {
-        final String payloadStr = this.payload == null ? "null" : this.payload.toString();
-        final String headersStr = this.headers == null ? "null" : this.headers.toString();
-        return "ApiResponse(" + this.status + ", " + payloadStr + ", " + headersStr + ")";
+        final Objects.ToStringHelper helper = Objects.toStringHelper(this);
+        helper.addValue(this.status);
+        helper.addValue(this.payload);
+        helper.addValue(this.headers);
+        return helper.toString();
     }
 }
 
