@@ -208,11 +208,11 @@ public class Note {
             o = new JSONObject();
             o.put("key", key);
             o.put("deleted", deleted ? 1 : 0);
-            o.put("modifydate", modifydate.getMillis() / 1000);
-            o.put("createdate", createdate.getMillis() / 1000);
-            o.put("systemtags", systemtags);
-            o.put("tags", tags);
-            o.put("content", content);
+            if (modifydate != null) { o.put("modifydate", modifydate.getMillis() / 1000); }
+            if (createdate != null) { o.put("createdate", createdate.getMillis() / 1000); }
+            if (systemtags != null) { o.put("systemtags", systemtags); }
+            if (tags != null) { o.put("tags", tags); }
+            if (content != null) { o.put("content", content); }
         } catch (JSONException jsone) {
             logger.error("Unable to create Note from response {}", jsone);
         }
