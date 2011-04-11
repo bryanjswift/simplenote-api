@@ -25,5 +25,6 @@ public class Constants {
     public static final String API_NOTE_CREATE_URL = API2_BASE_URL + "/data?auth=%s&email=%s";
     public static final String API_NOTE_UPDATE_URL = API2_BASE_URL + "/data/%s?auth=%s&email=%s";
     public static final String API_NOTE_GET_URL = API_NOTE_UPDATE_URL;
+    public static final String API_NOTE_DELETE_URL = API_NOTE_UPDATE_URL;
     private Constants() { }
 }
