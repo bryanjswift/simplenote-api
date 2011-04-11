@@ -74,5 +74,15 @@ public class ApiResponse<T> {
     public static <K> ApiResponse<K> empty(final int status) {
         return new ApiResponse<K>(status, null, Headers.EMPTY);
     }
+
+    /**
+     * Show ApiResponse info in a hopefully concise manner
+     * @return String representation of ApiResponse
+     */
+    public String toString() {
+        final String payloadStr = this.payload == null ? "null" : this.payload.toString();
+        final String headersStr = this.headers == null ? "null" : this.headers.toString();
+        return "ApiResponse(" + this.status + ", " + payloadStr + ", " + headersStr + ")";
+    }
 }
 
