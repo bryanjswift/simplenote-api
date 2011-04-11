@@ -231,7 +231,8 @@ public class Note {
         final boolean result;
         if (o instanceof Note) {
             final Note note = (Note) o;
-            result = Objects.equal(this.key, note.key) && Objects.equal(this.syncnum, note.syncnum) && Objects.equal(this.version, note.version);
+            result = Objects.equal(this.key, note.key) && Objects.equal(this.syncnum, note.syncnum)
+                      && Objects.equal(this.version, note.version);
         } else {
             result = false;
         }
