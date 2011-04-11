@@ -5,6 +5,7 @@
 AndroidManifest.xml
 default.properties
 project/boot
+project/test
 project/lib_managed
 project/plugins/lib_managed
 project/plugins/project/build.properties
